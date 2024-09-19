@@ -8,11 +8,11 @@ from sklearn.metrics import mean_squared_error, r2_score
 st.title('Abalone Age Prediction App')
 
 # File uploader to load the dataset
-uploaded_file = st.file_uploader("Upload a CSV file", type=["csv"])
+#uploaded_file = st.file_uploader("Upload a CSV file", type=["csv"])
 
 if uploaded_file is not None:
     # Read the uploaded CSV file into a DataFrame
-    df = pd.read_csv(uploaded_file)
+    df = pd.read_csv('https://archive.ics.uci.edu/static/public/1/data.csv')
     
     # Display the dataset
     st.write("Dataset Preview:")
