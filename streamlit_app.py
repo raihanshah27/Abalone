@@ -7,13 +7,25 @@ from sklearn.metrics import mean_squared_error, r2_score
 # Title of the web app
 st.title('Abalone Age Prediction App')
 
-# File uploader to load the dataset
-#uploaded_file = st.file_uploader("Upload a CSV file", type=["csv"])
+# Option to upload a CSV file
+uploaded_file = st.file_uploader("Upload a CSV file", type=["csv"])
 
 if uploaded_file is not None:
-    # Read the uploaded CSV file into a DataFrame
-    df = pd.read_csv('https://archive.ics.uci.edu/static/public/1/data.csv')
-    
+    # If a file is uploaded by the user, read it
+    df = pd.read_csv(uploaded_file)
+else:
+    # Alternatively, load the dataset from a URL if no file is uploaded
+    try:
+        df = pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.data',
+                         header=None, 
+                         names=["Sex", "Length", "Diameter", "Height", "Whole weight", "Shucked weight", 
+                                "Viscera weight", "Shell weight", "Rings"])
+    except Exception as e:
+        st.error(f"Failed to load the dataset: {e}")
+        df = None
+
+# Check if the dataset is loaded
+if df is not None:
     # Display the dataset
     st.write("Dataset Preview:")
     st.dataframe(df.head())
@@ -28,7 +40,7 @@ if uploaded_file is not None:
         st.write(df.describe())
         
         # Define features (drop Rings and Age) and target (Rings)
-        X = df.drop(columns=['Rings', 'Age'])  # Use only the physical measurements
+        X = df.drop(columns=['Rings', 'Age', 'Sex'])  # Use only the physical measurements
         y = df['Rings']  # Predict the number of rings
         
         # Split the dataset into training and testing sets
@@ -64,4 +76,4 @@ if uploaded_file is not None:
     else:
         st.error("The dataset must contain the 'Rings' column for prediction.")
 else:
-    st.write("Please upload a dataset to proceed.")
+    st.write("Please upload a dataset or wait for the default dataset to load.")
