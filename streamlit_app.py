@@ -74,6 +74,6 @@ if df is not None:
             st.write("Prediction Results:")
             st.dataframe(result_df)
     else:
-        st.error("The dataset must contain the 'Rings' column for prediction.")
+        st.error("Invalid")
 else:
     st.write("Please upload a dataset or wait for the default dataset to load.")
